@@ -1,6 +1,5 @@
 class App {
   constructor() {
-
     // 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048
     this.numbers = {
       0: { color: "rgb(93, 168, 74)" },
@@ -24,6 +23,8 @@ class App {
       [0, 0, 0, 0],
     ];
 
+    this.prevArray;
+
     this.keyNumbers = {
       down: 40,
       up: 38,
@@ -42,35 +43,19 @@ class App {
   init() {
     this.$root.style.height = `${this.H}px`;
     this.$root.style.width = `${this.W}px`;
-
-    let cell_w = this.W / this.array.length;
-    let cell_h = this.H / this.array.length;
+    this.cell_w = (this.W / this.array.length) - 10;
+    this.cell_h = (this.H / this.array.length) - 10;
     this.setRandom();
-    console.table(this.array);
+    this.draw();
+    this.eventHandler();
 
-    this.array.forEach((rows, y) => {
-      rows.forEach((values, x) => {
-        const $div = document.createElement("div");
-        $div.style.width = `${cell_w - 10}px`;
-        $div.style.height = `${cell_h - 10}px`;
+    let array = [];
 
-        $div.style.backgroundColor = this.numbers[`${values}`].color;
-        $div.textContent = values;
-
-        $div.classList.add("inner");
-        this.$root.appendChild($div);
-      });
+    this.array.forEach(rows => {
+      array.push([...rows]);
     });
 
-    this.eventHandler();
-  }
-
-  setRandom() {
-    for (let i = 0; i < 2; i++) {
-      let randomX = Math.floor(Math.random() * 4);
-      let randomY = Math.floor(Math.random() * 4);
-      this.array[randomY][randomX] === 0 ? this.array[randomY][randomX] = 2 : this.array[randomY][randomX];
-    }
+    this.prevArray = array;
   }
 
   eventHandler() {
@@ -87,15 +72,99 @@ class App {
         console.log("up");
         break;
       case this.keyNumbers.left:
-        console.log("left");
+
+        this.array.forEach((rows, y) => {
+          // [2,0,4,0]
+          // [2,4] ==> [2,4,0,0]
+          // let array = rows.filter(x => x !== 0).concat(rows.filter(x => x === 0))
+          this.array[y] = [...rows.filter(x => x !== 0), ...rows.filter(x => x === 0)];
+        });
+
+
+        this.array.forEach((rows, y) => {
+          rows.forEach((values, x) => {
+            if (x === 0) return;
+            if (rows[x - 1] === rows[x]) {
+              rows[x - 1] += rows[x];
+              rows[x] = 0;
+            }
+          });
+        });
+
+        this.draw();
         break;
       case this.keyNumbers.right:
-        console.log("right");
+        console.log(1);
+        this.array.forEach((rows, y) => {
+          // [2,0,4,0]
+          // [2,4] ==> [2,4,0,0]
+          // let array = rows.filter(x => x !== 0).concat(rows.filter(x => x === 0))
+          this.array[y] = [...rows.filter(x => x === 0), ...rows.filter(x => x !== 0)];
+        });
+
+        console.table(this.array);
+
+        this.array.forEach((rows, y) => {
+          rows.forEach((values, x) => {
+            if (x === 0) return;
+            if (rows[x + 1] === rows[x]) {
+              rows[x + 1] += rows[x];
+              rows[x] = 0;
+            }
+          });
+        });
+        this.draw();
+
         break;
     }
   }
   removeEvent() {
     window.removeEventListener('keydown', this.keyEvent);
+  }
+
+  setRandom() {
+    while (true) {
+      let randomX = Math.floor(Math.random() * 4);
+      let randomY = Math.floor(Math.random() * 4);
+      if (this.array[randomY][randomX] === 0) {
+        this.array[randomY][randomX] = 2
+        break;
+      }
+    }
+  }
+
+
+  validation() {
+    let isTrue = false;
+    this.array.forEach((rows) => {
+      rows.forEach((values) => {
+        if (values === 0) isTrue = true;
+      })
+    });
+    return isTrue;
+  }
+
+  draw() {
+
+    if (this.validation()) this.setRandom();
+
+    this.clear();
+    this.array.forEach((rows, y) => {
+      rows.forEach((values, x) => {
+        const $div = document.createElement("div");
+        $div.style.width = `${this.cell_w}px`;
+        $div.style.height = `${this.cell_h}px`;
+        $div.style.backgroundColor = this.numbers[`${values}`].color;
+        $div.textContent = values;
+        $div.classList.add("inner");
+        this.$root.appendChild($div);
+      });
+    });
+    // console.table(this.array);
+  }
+
+  clear() {
+    this.$root.innerHTML = "";
   }
 
 }
