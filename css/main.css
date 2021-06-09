@@ -1,0 +1,23 @@
+* {
+  font-family: 'Nanum Gothic', sans-serif;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+#root {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: space-between;
+}
+.inner{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 4rem;
+}
