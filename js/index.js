@@ -106,7 +106,7 @@ class App {
 
         this.array.forEach((rows, y) => {
           rows.forEach((values, x) => {
-            if (x === 0) return;
+            // if (x === 0) return;
             if (rows[x + 1] === rows[x]) {
               rows[x + 1] += rows[x];
               rows[x] = 0;
