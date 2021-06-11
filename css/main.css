@@ -2,11 +2,13 @@
   font-family: 'Nanum Gothic', sans-serif;
 }
 
+
 body {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
+  flex-direction: column;
 }
 
 #root {
@@ -14,10 +16,37 @@ body {
   flex-wrap: wrap;
   gap: 10px;
   justify-content: space-between;
+  position: relative;
+  padding: 10px 10px;
+  background-color: #BBADA0;
+  border-radius: 5px;
 }
-.inner{
+
+.inner {
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 4rem;
+  border-radius: 5px;
 }
+
+#mesaage {
+  position: absolute;
+  width: 100%;
+  background-color: rgba(00, 00, 00, .5);
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3rem;
+  color: #FFF;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  letter-spacing: .5rem;
+  left: 0;
+}
+
+.header{ display: flex; width: 600px; gap: 50px; margin: 25px 0;}
+.header .title{flex-direction: column; flex: 1; display: flex; justify-content: center; align-items: center; font-size: 4rem; letter-spacing: .5rem; font-weight: bold; color: #776E65;}
+.header .score{padding: 20px 0; text-align: center;}
