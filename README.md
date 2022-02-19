@@ -6,6 +6,12 @@
 - 4 X 4 카드판에서 더 이상 움질일 🃏카드가 없다면 패배한다.
 - [게임체험하기](https://dnr14.github.io/2048)
 
+## 구현 기술
+
+1.  HTML, CSS, JS
+
+> 👨‍💻 구현화면
+
 <div align=center>
   <img src=./images/2048.gif />
 </div>
