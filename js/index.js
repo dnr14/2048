@@ -15,14 +15,14 @@ class App {
       512: { color: "rgb(237, 200, 80)", fontColor: "#FFF" },
       1024: { color: "rgb(237, 197, 63)", fontColor: "#FFF" },
       2048: { color: "rgb(237, 194, 46)", fontColor: "#FFF" },
-    }
+    };
 
-    //게임 4 x 4 판 
+    //게임 4 x 4 판
     this.array = [
       [0, 0, 0, 0],
       [0, 0, 0, 0],
       [0, 0, 0, 0],
-      [0, 0, 0, 0]
+      [0, 0, 0, 0],
     ];
 
     // up,down 눌럿을때 360회전 후 계산 하고 다시 360회전
@@ -39,14 +39,14 @@ class App {
     this.keys = {
       down: "ArrowDown",
       up: "ArrowUp",
-      left: 'ArrowLeft',
-      right: 'ArrowRight'
-    }
+      left: "ArrowLeft",
+      right: "ArrowRight",
+    };
 
     //게임 시작 div
-    this.$root = document.querySelector('#root');
+    this.$root = document.querySelector("#root");
     //게임 점수 div
-    this.$score = document.querySelector('.score');
+    this.$score = document.querySelector(".score");
     //게임 보드 높이
     this.H = 600;
     //게임 보드 너비
@@ -60,15 +60,15 @@ class App {
   init() {
     this.$root.style.height = `${this.H}px`;
     this.$root.style.width = `${this.W}px`;
-    this.cell_w = (this.W / this.array.length) - 10;
-    this.cell_h = (this.H / this.array.length) - 10;
+    this.cell_w = this.W / this.array.length - 10;
+    this.cell_h = this.H / this.array.length - 10;
     this.eventHandler();
     this.draw();
   }
 
   //이벤트 등록
   eventHandler() {
-    window.addEventListener('keydown', this.keyEvent);
+    window.addEventListener("keydown", this.keyEvent);
   }
   // keyEvent(e){} 이렇게 쓸꺼면 bind를 해줘야한다.
   // window.addEventListener('keydown', this.keyEvent.bind(this));
@@ -88,15 +88,15 @@ class App {
         this.rightMove();
         break;
     }
-  }
+  };
 
-  // 왼쪽키 눌렀을때 
+  // 왼쪽키 눌렀을때
   leftMove() {
     this.calculation(this.removeZero(this.array, true));
     this.draw();
   }
 
-  // 위쪽키 눌렀을때 
+  // 위쪽키 눌렀을때
   upMove() {
     let rotate = this.makeArray();
     this.rotate(rotate, this.array);
@@ -107,8 +107,8 @@ class App {
 
   // 오른쪽키 눌렀을때
   rightMove() {
-    this.removeZero(this.array, false).forEach(rows => rows.reverse());
-    this.calculation(this.array).forEach(rows => rows.reverse());
+    this.removeZero(this.array, false).forEach((rows) => rows.reverse());
+    this.calculation(this.array).forEach((rows) => rows.reverse());
     this.draw();
   }
 
@@ -116,15 +116,15 @@ class App {
   downMove() {
     let rotate = this.makeArray();
     this.rotate(rotate, this.array);
-    this.removeZero(rotate, false).forEach(rows => rows.reverse());
-    this.calculation(rotate).forEach(rows => rows.reverse());
+    this.removeZero(rotate, false).forEach((rows) => rows.reverse());
+    this.calculation(rotate).forEach((rows) => rows.reverse());
     this.array = this.rotate(this.makeArray(), rotate);
     this.draw();
   }
 
   // 값을 계산 하는 로직
   // rows에 0번째 요소는 앞에 값이없어서 검사를 안한다(바로 return)
-  // 앞에 요소와 현재 요소가 같다면 합친 후 현재 요소 0으로 변경 
+  // 앞에 요소와 현재 요소가 같다면 합친 후 현재 요소 0으로 변경
   // 블록이 합쳐졌다면 점수 계산
   // 앞에 요소가 0이라면 현재 요소로 변경 후 현재 요소 0으로 변경
   calculation(array) {
@@ -147,14 +147,20 @@ class App {
   }
 
   // [2,0,4,0] ==> [2,4] ==> [2,4,0,0]
-  // 0이 아닌 요소 검색 후 나머지 자리 0 요소로 채워넣음 
+  // 0이 아닌 요소 검색 후 나머지 자리 0 요소로 채워넣음
   removeZero(array, value) {
     // let array = rows.filter(x => x !== 0).concat(rows.filter(x => x === 0))
     array.forEach((rows, y) => {
       if (value === true) {
-        array[y] = [...rows.filter(x => x !== 0), ...rows.filter(x => x === 0)];
+        array[y] = [
+          ...rows.filter((x) => x !== 0),
+          ...rows.filter((x) => x === 0),
+        ];
       } else if (value === false) {
-        array[y] = [...rows.filter(x => x === 0), ...rows.filter(x => x !== 0)];
+        array[y] = [
+          ...rows.filter((x) => x === 0),
+          ...rows.filter((x) => x !== 0),
+        ];
       }
     });
     return array;
@@ -176,7 +182,7 @@ class App {
     this.array.forEach((rows) => {
       rows.forEach((values) => {
         if (values === 0) isfalse = true;
-      })
+      });
     });
     return isfalse;
   }
@@ -188,11 +194,11 @@ class App {
 
   // 게임 승리,패배 후 이벤트 제거
   removeEvent() {
-    window.removeEventListener('keydown', this.keyEvent);
+    window.removeEventListener("keydown", this.keyEvent);
   }
 
   // 4x4 배열에 랜덤으로  0 요소 찾아서 2로 변경
-  // key 이벤트 발생하면 실행 
+  // key 이벤트 발생하면 실행
   setRandom() {
     while (true) {
       let randomX = Math.floor(Math.random() * 4);
@@ -208,8 +214,8 @@ class App {
   draw() {
     if (this.validation()) this.setRandom();
     this.clear();
-    this.array.forEach(rows => {
-      rows.forEach(values => {
+    this.array.forEach((rows) => {
+      rows.forEach((values) => {
         const $div = document.createElement("div");
         $div.style.width = `${this.cell_w}px`;
         $div.style.height = `${this.cell_h}px`;
@@ -233,17 +239,17 @@ class App {
   // 승리조건인지 확인
   win() {
     let win = false;
-    this.array.forEach(rows => {
-      rows.forEach(values => {
+    this.array.forEach((rows) => {
+      rows.forEach((values) => {
         if (values === 2048) win = true;
       });
-    })
+    });
     if (win) this.setMesaage("WIN");
     return win;
   }
 
-  // 로우 방향 검색 후 
-  // 컬럼 방향으로 검색 
+  // 로우 방향 검색 후
+  // 컬럼 방향으로 검색
   gameOver() {
     if (!this.validation()) {
       let obj = { gameOver: true };
@@ -262,8 +268,9 @@ class App {
     array.forEach((rows, y) => {
       rows.forEach((values, x) => {
         if (x - 1 < 0) return;
-        console.log(rows[x - 1], values);
-        if (rows[x - 1] === values) { obj.gameOver = false }
+        if (rows[x - 1] === values) {
+          obj.gameOver = false;
+        }
       });
     });
   }
@@ -274,10 +281,8 @@ class App {
     $div.id = "mesaage";
     $div.textContent = text;
     this.$root.appendChild($div);
-    window.removeEventListener('keydown', this.keyEvent);
+    window.removeEventListener("keydown", this.keyEvent);
   }
 }
-
 //시작
 new App();
-
